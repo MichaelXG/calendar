@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendário com eventos e Feriados</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Kanit:300,700"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i|IBM+Plex+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|Lato:100,100i,300,300i,400,400i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Ramabhadra"
+      rel="stylesheet"
+    />
+    <!--<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">-->
+    <link
+      rel="stylesheet"
+      href="https://anandchowdhary.github.io/ionicons-3-cdn/icons.css"
+      integrity="sha384-+iqgM+tGle5wS+uPwXzIjZS5v6VkqCUV7YQ/e/clzRHAxYbzpUJ+nldylmtBWCP0"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="calendar-left">
+        <div class="menu">
+          <div class="menu-toggle">
+            <div>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <!-- Submenu oculto -->
+            <div class="submenu" id="submenu">
+              <div class="submenu-item" id="clear-events">
+                Limpar eventos
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 7h16"></path>
+                  <path d="M10 11v6"></path>
+                  <path d="M14 11v6"></path>
+                  <path
+                    d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+                  ></path>
+                  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="custom-select" id="custom-select">
+            <div class="select-selected">
+              <span class="flag-icon flag-icon-br"></span> Brasil
+            </div>
+            <div class="select-items">
+              <!-- Options will be added dynamically here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="num-date" id="num-date">XX</div>
+        <div class="day" id="day">SEMANA</div>
+        <hr class="event-line" />
+
+        <div class="current-events">
+          <div>Feriados</div>
+          <ul>
+            <!-- Feriados serão carregados aqui -->
+          </ul>
+        </div>
+        <hr class="event-line" />
+        <div class="current-events">
+          <div>Eventos</div>
+          <div class="event-list" id="event-list">
+            <li>
+              <!-- Eventos atuais serão carregados aqui -->
+            </li>
+          </div>
+        </div>
+        <hr class="event-line" />
+
+        <div class="create-event">
+          <button type="button" class="add-event-button" id="add-event-button">
+            <span class="add-event-button__title">Add Evento</span>
+
+            <span class="add-event-button__icon">
+              <i class="ion ion-ios-star-outline"></i>
+            </span>
+          </button>
+        </div>
+
+        <hr class="event-line" />
+      </div>
+
+      <div class="calendar-right">
+        <div class="calendar-info">
+          <div class="colspan2">
+            <!-- Formulário de busca de cidade -->
+            <form id="search">
+              <i
+                class="fa-solid fa-location-dot"
+                id="location-icon"
+                title="Atualizar Localização"
+              ></i>
+              <input
+                type="search"
+                name="city_name"
+                id="city_name"
+                placeholder="Buscar cidade"
+              />
+              <button type="submit" class="styled-button">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </form>
+
+            <!-- Elemento de carregamento -->
+            <div id="loading" style="display: none">
+              <p>Atualizando localização...</p>
+            </div>
+          </div>
+
+          <div class="colspan2">
+            <div id="weather">
+              <div id="infos">
+                <img id="temp_img" src="" alt="" />
+                <p id="temp_value">0</p>
+                <div class="temp-text">
+                  <p id="temp_description"><br />Ensolarado</p>
+                </div>
+
+                <!-- <div id="other_infos"></div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="info" title="Temperatura Máxima">
+            <i id="temp_max_icon" class="fa-solid fa-temperature-high"></i>
+
+            <div>
+              <p id="temp_max">0 <sup>C°</sup></p>
+            </div>
+          </div>
+
+          <div class="info" title="Temperatura Mínima">
+            <i id="temp_min_icon" class="fa-solid fa-temperature-low"></i>
+
+            <div>
+              <p id="temp_min">0 <sup>C°</sup></p>
+            </div>
+          </div>
+
+          <div class="info" title="Humidade">
+            <i id="humidity_icon" class="fa-solid fa-droplet"></i>
+
+            <div>
+              <p id="humidity">0 %</p>
+            </div>
+          </div>
+
+          <div class="info" title="Velocidade do vento">
+            <i id="wind_icon" class="fa-solid fa-wind"></i>
+            <div>
+              <p id="wind">0 km/h</p>
+            </div>
+          </div>
+
+          <div id="alert"></div>
+        </div>
+
+        <div class="calendar-base">
+          <!-- Cabeçalho de navegação -->
+          <table id="calendar-year">
+            <thead>
+              <tr>
+                <td class="triangle-left" id="prev-year"></td>
+                <td class="year" id="year">XXXX</td>
+                <td class="triangle-right" id="next-year"></td>
+              </tr>
+            </thead>
+          </table>
+          <!-- Cabeçalho dos Meses -->
+          <table id="calendar-months">
+            <thead>
+              <tr class="month-row">
+                <!-- Os meses serão inseridos aqui dinamicamente -->
+              </tr>
+            </thead>
+          </table>
+
+          <!-- Cabeçalho dos Dias da Semana -->
+          <table id="calendar-header">
+            <thead>
+              <tr class="day-row">
+                <!-- Os dias da semana serão inseridos aqui dinamicamente -->
+              </tr>
+            </thead>
+          </table>
+
+          <!-- Corpo do Calendário -->
+          <table id="calendar-body">
+            <!-- O corpo do calendário será gerado aqui -->
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para visualizar e editar eventos -->
+    <div id="modal" class="modal">
+      <header class="modal-close">
+        <div>
+          <button
+            class="close close-button"
+            id="cancel-btn"
+            title="Clique para fechar ou ESC"
+          >
+            &times;
+          </button>
+        </div>
+      </header>
+      <header class="modal-header">
+        <div><h4 class="modal-title">Detalhes do evento</h4></div>
+        <div><h5 class="modal-status"></h5></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-content">
+          <div class="date-row">
+            <label for="dateEvent">Dt. Evento:</label>
+            <input type="date" id="dateEvent" placeholder="Data do evento" />
+          </div>
+
+          <div class="title-row">
+            <label for="title">Título Evento</label>
+            <input type="text" id="title" placeholder="Título do evento" />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="description-row">
+            <label for="description">Descrição:</label>
+            <textarea
+              id="description"
+              placeholder="Descrição do evento"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="time-alarm-container">
+            <div class="label-row">
+              <label for="startTime">Período do evento</label>
+            </div>
+            <div class="time-row">
+              <div class="start-time">
+                <input type="time" id="startTime" />
+              </div>
+              <div class="end-time">
+                <input type="time" id="endTime" />
+              </div>
+              <div class="alarm-container">
+                <input type="checkbox" id="alarm" class="alarm-checkbox" />
+                <label for="alarm">Lembre-me</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="cep-row">
+            <input type="text" id="cep" maxlength="9" placeholder="00000-000" />
+          </div>
+          <div>
+            <button
+              id="search-btn"
+              class="styled-button search-button"
+              title="Buscar Endereço"
+            >
+              <span class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                  <path d="M21 21l-6 -6"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div>
+            <button
+              id="open-maps"
+              class="styled-button map-button"
+              title="Google Maps"
+            >
+              <span class="icon">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg"
+                  alt="Google Maps"
+                />
+              </span>
+            </button>
+          </div>
+
+          <div>
+            <button
+              id="open-waze"
+              class="styled-button waze-button"
+              title="Waze"
+            >
+              <span class="icon">
+                <img
+                  src="https://kstatic.googleusercontent.com/files/c7720b37b5a60664c0dc9885a88c5510428d987d66dc997743e16129bd782b5222b6f565df39a0a61b8312478a354dad538c9750c2e59acc4838852f8be10e2f"
+                  alt="Waze"
+                />
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="address-box">
+          <div class="modal-content">
+            <div class="address-row">
+              <label for="street">Logradouro</label>
+              <input type="text" id="street" placeholder="Rua, Av." />
+            </div>
+            <div class="number-row">
+              <label for="number">Número</label>
+              <input type="text" id="number" placeholder="Número" />
+            </div>
+          </div>
+
+          <div class="modal-content">
+            <div class="complement-row">
+              <label for="complement">Complemento</label>
+              <input type="text" id="complement" placeholder="casa, apto ..." />
+            </div>
+          </div>
+
+          <div class="modal-content">
+            <div class="neighborhood-row">
+              <label for="neighborhood">Bairro</label>
+              <input type="text" id="neighborhood" placeholder="Bairro" />
+            </div>
+            <div class="city-row">
+              <label for="city">Cidade:</label>
+              <input type="text" id="city" placeholder="Cidade" />
+            </div>
+            <div class="state-row">
+              <label for="state">UF:</label>
+              <input type="text" id="state" placeholder="UF" />
+            </div>
+          </div>
+
+          <div class="modal-content">
+            <div class="reference-row">
+              <label for="reference">Referência:</label>
+              <textarea
+                id="reference"
+                placeholder="Referência (opcional)"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <div class="modal-content">
+          <div class="buttons">
+            <button id="save-btn" class="styled-button save-button">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div class="alert-overlay" id="alertOverlay"></div>
+
+    <div class="custom-alert" id="customAlert">
+      <h2 id="alertTitle"></h2>
+      <p id="alertDescription"></p>
+      <p id="alertstartTime"></p>
+      <button onclick="closeCustomAlert()">Fechar</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

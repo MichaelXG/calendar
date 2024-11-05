@@ -1,0 +1,1732 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
+
+  /* responsividade para o calendário */
+  @media screen and (max-width: 768px) {
+    #calendar-year {
+      width: 100%;
+    }
+   .calendar-base {
+      grid-column: 1;
+    }
+  }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;  
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+  font-family: 'Kanit', sans-serif;
+  margin: 2px 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  width: 90vw;
+  height: 98vh;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  
+  /* responsividade para o container: ; */
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    grid-template-columns: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+} 
+
+.calendar-right {
+  grid-column: 2;
+  border-radius: 0 20px 20px 0;
+  background-color: white;
+  color: black;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas de tamanhos iguais */
+  gap: 5px; /* Espaço entre os itens */
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  /* border: 1px dashed rgb(186, 235, 60); */
+}
+
+.calendar-info {
+  grid-column: 1 / -1; /* Ocupa as duas colunas principais da .calendar-right */
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* Define seis colunas de largura igual */
+  gap: 5px;
+  text-align: center;
+}
+
+.calendar-base {
+  grid-column: 1 / -1; /* Faz .calendar-info ocupar as duas colunas */
+  border-radius: 0 20px 20px 0;
+  background-color: white;
+  color: black;
+  position: relative;
+  /* border: 1px dashed rgb(240, 38, 179); Borda pontilhada vermelha */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  min-width: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#calendar-months,
+#calendar-header,
+#calendar-body {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+table {
+  margin: 0 auto;
+}
+
+.calendar-left {
+  grid-column: 1;
+  height: 100%;
+  border-radius: 20px 0 0 20px;
+  background-color: #2ECC71;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  /* border: 1px dashed red; Borda pontilhada vermelha */
+}
+
+.calendar-left>div {
+  /* border: 1px dotted #003366; Borda pontilhada azul escuro */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.calendar-table {
+  grid-column: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 20px 20px 0;
+  background-color: white;
+  color: black;
+  padding: 20px;
+  box-sizing: border-box;
+  /* border: 1px dashed rgb(241, 220, 24); Borda pontilhada amarela */
+  text-align: center;
+  border-collapse: separate;
+  border-spacing: 0;
+  justify-content: space-between;
+}
+
+.calendar-table th,
+.calendar-table td,
+#calendar-body td {
+  grid-template-columns: repeat(7, 1fr);
+  /* border: 01px dotted rgb(0, 0, 0); */
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+  gap: 1px;
+  width: 20px;
+  height: 20px;
+}
+
+.td-clear {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  line-height: normal !important;
+  text-align: left !important;
+  vertical-align: top !important;
+  background: none !important;
+}
+
+/* Estilo geral para a tabela do calendário */
+#calendar-year {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  position: relative;
+}
+
+/* Estilo para a div que exibe o ano */
+.year {
+  color: #E8E8E8;
+  font-size: 3vw;
+  float: right;
+  position: relative;
+  right: 35px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+/* Estilo para a seta esquerda */
+.triangle-left {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-right: 10px solid #E8E8E8;
+  border-bottom: 5px solid transparent;
+  position: absolute;
+  right: 170px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Estilo para a seta direita */
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-left: 10px solid #E8E8E8;
+  border-bottom: 5px solid transparent;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Adicionando um contêiner para garantir que a posição absolute funcione */
+#calendar-year {
+  position: relative;
+  padding: 10px;
+  width: 100%;
+  /* border: 1px solid #ccc; Adicionar borda se necessário */
+}
+
+.triangle-left:hover {
+  border-right: 10px solid #2ECC71;
+}
+
+.triangle-right:hover {
+  border-left: 10px solid #2ECC71;
+}
+
+.month-color {
+  color: #27AE60;
+}
+
+.month-hover:hover {
+  color: #27e879 !important;
+}
+
+.months {
+  color: #AAAAAA;
+  position: relative;
+  word-spacing: 10px;
+}
+
+.month-line {
+  border-color: #E8E8E8;
+  position: absolute;
+  width: 57%;
+  left: 178px;
+}
+
+.days {
+  color: #AAAAAA;
+  position: relative;
+  font-size: 18px;
+  word-spacing: 35px;
+  font-weight: 600;
+}
+
+.num-dates {
+  float: right;
+  position: relative;
+  top: 110px;
+  right: 50px;
+  z-index: 1;
+}
+
+.menu {
+  margin-bottom: 30px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  justify-content: space-between;
+  border-radius: 20px;
+}
+
+.menu-toggle {
+  grid-column: 1;
+  display: inline-block;
+  justify-content: flex-start;
+}
+
+.custom-select {
+  grid-column: 2;
+  display: inline-block;
+  justify-content: flex-end;
+}
+
+.num-date {
+  font-size: 120px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.day {
+  text-align: center;
+  font-size: 30px;
+  margin-top: -40px;
+}
+
+.current-events {
+  font-size: 15px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.posts {
+  text-decoration: underline dotted;
+}
+
+.posts:hover {
+  color: #27e879 !important;
+}
+
+.event-line {
+  width: 90%;
+}
+
+.create-event {
+  font-size: 15px;
+  margin-top: 30px;
+  text-align: left;
+  position: relative;
+  display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+.add-event {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: solid white 2px;
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add {
+  font-size: 35px;
+  color: white;
+  position: relative;
+  bottom: 2px;
+  transform: translateY(-2px);
+  margin: 0;
+}
+
+.add:hover,
+.create-event:hover,
+.add-event:hover {
+  color: #27e879 !important;
+  border-color: #27e879 !important;
+}
+
+/* Estilos para o seletor de país */
+#country-selector {
+  display: flex;
+  align-items: center;
+}
+
+#country-selector option {
+  display: flex;
+  align-items: center;
+}
+
+.first-week,
+.second-week,
+.third-week,
+.fourth-week,
+.fifth-week,
+.sixth-week {
+  margin-bottom: 30px;
+  word-spacing: 30px;
+}
+
+.grey {
+  color: #AAAAB1;
+}
+
+.month-cell:nth-child(1) {
+  border-left: none;
+}
+
+.month-cell:nth-last-child(1) {
+  border-right: none;
+}
+
+#calendar-months {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#calendar-months .month-cell {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  width: calc(100% / 12);
+}
+
+#calendar-header {
+  border-collapse: collapse;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+#calendar-header .days {
+  text-align: center;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+}
+
+#calendar-body {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.month-row,
+.day-row {
+  display: table-row;
+  border-bottom: 2px solid #ddd;
+}
+
+.month-cell,
+.days {
+  display: table-cell;
+}
+
+/* -------------------------- */
+/* Estilo para o elemento selecionado */
+.select-selected {
+  background-color: #2ECC71;
+  padding: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: white;
+  border-radius: 20px;
+}
+
+/* Estilo para o ícone da bandeira */
+.select-selected .flag-icon {
+  width: 20px;
+  height: 14px;
+  margin-right: 8px;
+}
+
+/* Estilo para o menu suspenso */
+.select-items {
+  display: none;
+  position: absolute;
+  background-color: #2ECC71;
+  border: 1px solid #ccc;
+  z-index: 99;
+  width: 50%;
+  max-height: 100px;
+  overflow-y: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para as opções no menu suspenso */
+.select-items div {
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+/* Estilo para o item selecionado no menu suspenso */
+.select-items div:hover {
+  background-color: #f1f1f1;
+}
+
+/* Estilo para o ícone da bandeira nas opções */
+.select-items .flag-icon {
+  margin-right: 8px;
+}
+
+/* -------------------------- */
+/* modal */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-x: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* Header do modal */
+.modal-close {
+  display: flex;
+  align-items: center;
+  /* border-radius: 20px; */
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column; /* Empilha itens verticalmente */
+  align-items: center; /* Centraliza itens horizontalmente */
+  background-color: #27e879; /* Cor de fundo do cabeçalho */
+  border-radius: 20px; /* Cantos arredondados */
+  width: 100%; /* Certifique-se de que o cabeçalho ocupe toda a largura */
+  padding: 10px; /* Adiciona algum preenchimento para estética */
+}
+
+.modal-title {
+  margin: 0; /* Remove a margem padrão */
+  color: white; /* Cor do texto do título */
+  width: 100%; /* Ocupa toda a largura */
+  text-align: center; /* Centraliza o texto */
+  min-height: 5px; /* Define uma altura mínima */
+}
+
+.modal-status {
+  margin: 0; /* Remove a margem padrão */
+  color: #666; /* Cor alterada para distinção */
+  width: 100%; /* Ocupa toda a largura */
+  text-align: center; /* Centraliza o texto */
+  min-height: 5px; /* Define uma altura mínima */
+}
+
+.modal-body {
+  padding: 10px 0;
+}
+
+/* Rodapé com o botão de download */
+.modal-footer {
+  margin-top: 10px;
+}
+
+ /* Estilos para o botão de fechar */
+.close {
+  font-size: 24px;
+  font-weight: bold;
+  color: #27e879; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%; 
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+/* Estilo ao passar o mouse sobre o botão de fechar */
+.close:hover {
+  background-color: #27e879; 
+  color: white; 
+}
+
+.address-row {
+  grid-column: span 3;
+}
+
+.neighborhood-row,
+.city-row {
+  grid-column: span 2;
+}
+
+.number-row,
+.state-row {
+  grid-column: span 1;
+}
+
+#title,
+#date-eve,
+#description {
+  grid-column: span 5;
+}
+
+#time,
+#alarm {
+  grid-column: span 2;
+}
+
+textarea {
+  grid-column: span 5;
+  width: 100%;
+  resize: vertical;
+}
+
+.modal-content>div,
+.modal-content>label,
+.modal-content>input,
+.modal-content>textarea,
+.modal-content>button {
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.modal-content .cep-row #lookup-cep,
+
+.modal-content .date-row {
+  grid-column: span 1;
+}
+
+.modal-content .cep-row {
+  grid-column: span 2;
+}
+
+.modal-content .title-row {
+  grid-column: span 4;
+}
+
+.modal-content .address-row {
+  grid-column: span 4;
+}
+
+.modal-content .description-row,
+.modal-content .complement-row,
+.modal-content .location-row,
+.modal-content .reference-row,
+.modal-content .buttons,
+.modal-content .map-buttons {
+  grid-column: span 5;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+
+/* Data */
+.date-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.date-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.date-row input[type="date"] {
+  width: 90%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.date-row input[type="date"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.date-row input[type="date"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.date-row input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(36%) sepia(91%) saturate(2728%) hue-rotate(107deg) brightness(96%) contrast(99%);
+  cursor: pointer;
+}
+
+/* Titulo */
+.title-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.title-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.title-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.title-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.title-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+/* Descrição */
+.description-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo do rótulo */
+.description-row label {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Estilo do campo de textarea */
+.description-row textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  background-color: #f8f8f8;
+  resize: vertical;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito de hover */
+.description-row textarea:hover {
+  border-color: #27e879;
+}
+
+/* Efeito de foco */
+.description-row textarea:focus {
+  border-color: #27e879;
+  box-shadow: 0px 0px 5px rgba(39, 232, 121, 0.5);
+}
+
+/* Container principal */
+.time-alarm-container {
+  display: grid; /* Muda para grid layout */
+  grid-template-columns: repeat(5, 1fr); /* Divide em 5 colunas iguais */
+  gap: 20px; /* Espaçamento entre os elementos */
+  font-family: Arial, sans-serif;
+  width: 100%; /* Garante que o container ocupe 100% da largura */
+  grid-column: span 5;
+}
+
+.time-alarm-container label {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: bold;
+}
+/* Rótulos ocupando a linha inteira */
+.label-row {
+  grid-column: span 5;
+}
+
+/* Seções para o rótulo e o campo de entrada */
+.time-row {
+  display: contents; /* Permite que os filhos ocupem o espaço do grid */
+}
+
+.startTime ,
+.endTime,
+.alarm-container {
+  grid-column: span 3; /* O campo de fim ocupa 2 colunas */
+}
+
+.alarm-container {
+  display: flex;
+  align-items: center; /* Centraliza o checkbox e o label verticalmente */
+  gap: 8px; /* Espaçamento entre o checkbox e o label */
+}
+
+.alarm-checkbox {
+  transform: scale(1.2); /* Ajusta o tamanho do checkbox */
+  accent-color: #34c776; /* Cor do checkbox */
+}
+
+/* Estilo do label */
+.time-row label,
+.alarm-row label {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+/* Estilo do campo de entrada de tempo */
+.time-row input[type="time"],
+.alarm-row input[type="checkbox"] {
+  padding: 10px; /* Espaçamento interno */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 1.5px solid #ccc; /* Borda */
+  border-radius: 6px; /* Bordas arredondadas */
+  outline: none; /* Remove contorno padrão ao focar */
+  color: #333; /* Cor do texto */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Efeitos de transição */
+  width: 100%; /* Faz o input ocupar toda a largura disponível */
+}
+
+/* Cor do ícone do relógio para verde */
+.time-row input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: hue-rotate(90deg) saturate(1.5); /* Ajuste da cor para verde */
+}
+
+
+/* Cor no hover */
+.time-row input[type="time"]:hover {
+  border-color: #34c776; /* Altera a cor da borda ao passar o mouse */
+}
+
+/* Efeito no foco */
+.time-row input[type="time"]:focus {
+  border-color: #34c776; /* Altera a cor da borda ao focar */
+  box-shadow: 0px 0px 4px rgba(52, 199, 118, 0.5); /* Sombra ao focar */
+}
+
+.time-row input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(36%) sepia(91%) saturate(2728%) hue-rotate(107deg) brightness(96%) contrast(99%);
+  cursor: pointer;
+}
+
+/* Estilo do checkbox */
+.alarm-row input[type="checkbox"] {
+  transform: scale(1.2); /* Aumenta o tamanho do checkbox */
+  accent-color: #34c776; /* Cor do checkbox */
+  margin-top: 8px; /* Margem superior */
+}
+
+/* cep */
+.cep-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo do rótulo */
+.cep-row label {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Estilo do campo de entrada de texto */
+.cep-row input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  background-color: #f8f8f8;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito de hover */
+.cep-row input[type="text"]:hover {
+  border-color: #27e879;
+}
+
+/* Efeito de foco */
+.cep-row input[type="text"]:focus {
+  border-color: #27e879;
+  box-shadow: 0px 0px 5px rgba(39, 232, 121, 0.5);
+}
+
+/* Logradouro */
+.address-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.address-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.address-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.address-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.address-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.number-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.number-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.number-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.number-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.number-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.complement-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.complement-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.complement-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.complement-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.complement-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+
+.neighborhood-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.neighborhood-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.neighborhood-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.neighborhood-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.neighborhood-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.city-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.city-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.city-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.city-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.city-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.state-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.state-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.state-row input[type="text"] {
+  width: 100%; /* Ocupa toda a largura disponível */
+  padding: 10px; /* Espaçamento interno do campo */
+  font-size: 14px; /* Tamanho da fonte */
+  border: 2px solid #ccc; /* Cor da borda */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none; /* Remove a borda padrão do foco */
+  background-color: #f8f8f8; /* Cor de fundo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transições para efeitos */
+}
+
+.state-row input[type="text"]:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.state-row input[type="text"]:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+.reference-row {
+  margin-bottom: 12px; /* Espaçamento entre os campos */
+}
+
+.reference-row label {
+  font-size: 0.9em; /* Tamanho da fonte do rótulo */
+  color: #333; /* Cor do texto do rótulo */
+  font-weight: bold; /* Negrito */
+  display: block; /* Para garantir que o rótulo fique acima do campo */
+  margin-bottom: 4px; /* Espaçamento entre o rótulo e o campo de entrada */
+}
+
+.reference-row textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  background-color: #f8f8f8;
+  resize: vertical;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.reference-row textarea:hover {
+  border-color: #27e879; /* Cor da borda ao passar o mouse */
+}
+
+.reference-row textarea:focus {
+  border-color: #2ECC71; /* Cor da borda em foco */
+  box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); /* Sombra ao focar */
+}
+
+/* ---fim--- */
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2ECC71;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #27e879;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"],
+input[type="time"],
+textarea,
+.modal-content>input,
+.modal-content>textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-content input,
+.modal-content textarea {
+  max-width: 100%;
+}
+
+/* Estilo uniforme para todos os botões */
+.styled-button {
+  padding: 8px 12px; /* Diminui o padding */
+  font-size: 16px;
+  color: #fff;
+  background-color: #2ECC71;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styled-button:hover {
+  background-color: #27e879;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.styled-button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ------------- */
+.menu-toggle {
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 50%;
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 10px 30px -14px #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #777;
+    border-radius: 2px;
+    transition: all 300ms ease;
+
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+
+    &:first-child {
+      width: 20px;
+    }
+
+    &:last-child {
+      width: 15px;
+    }
+  }
+
+  &:hover span:first-child,
+  &:hover span:last-child {
+    width: 100%;
+  }
+}
+
+&::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-left-color: #e8e8e8;
+  position: absolute;
+  bottom: -13px;
+  right: 0px;
+}
+
+&::after {
+  content: "";
+  display: block;
+  width: calc(100% - 10px);
+  height: 2px;
+  background-color: #e8e8e8;
+  position: relative;
+  top: 8px;
+}
+
+/* -------------- */
+.add-event-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0;
+  background: linear-gradient(to left, #2ECC71, rgba(255, 44, 118, 0.25)), #2ECC71;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0px 0px 40px -9px #2ECC71;
+  border: 1px solid #ccc;
+}
+
+.add-event-button:active {
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
+.add-event-button__title {
+  color: #fff;
+  padding: 0 18px 0 23px;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  font-family: "Lato";
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.add-event-button__icon {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 17px 0 12px;
+  height: 100%;
+}
+
+.add-event-button__icon i {
+  margin: 0;
+  color: #fff;
+  font-size: 25px;
+  padding: 13px 0;
+}
+
+/* ---------------- */
+.circle {
+  width: 4rem;
+  height: 4rem;
+  border: 2px solid;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: inline-block;
+  position: relative;
+}
+
+.circle span {
+  background: orange;
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle td {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle.active-day {
+  border-color: #2ECC71;
+  background-color: #2ECC71;
+  color: #fff;
+}
+
+.circle.active-day td {
+  background-color: #2ECC71;
+}
+
+.circle.blue-light {
+  border-color: #60b5ee;
+}
+
+.circle.blue-light td {
+  background-color: #60b5ee;
+}
+
+.circle.orange {
+  border-color: orange;
+}
+
+.circle.orange td {
+  background: orange;
+}
+.event-card {
+  padding: 5px 10px;          
+  margin: 5px 0;              
+  box-shadow: 0px 0px 40px -9px #2ECC71;
+  border: 1px solid #ccc;
+  border-radius: 20px;          
+  display: flex;                
+  justify-content: space-between; 
+  align-items: center;         
+  transition: background-color 0.3s; 
+}
+
+.event-card:hover {
+  background-color: #f1f1f1;   
+  color:#2ECC71;                 
+}
+
+#event-list {
+  max-height: 110px;
+  overflow-y: auto;  
+  overflow-x: auto; 
+  padding: 3px; 
+}
+
+.event-content {
+  flex-grow: 1; /
+}
+
+.event-actions {
+  display: flex;
+  gap: 2px; 
+}
+
+.edit-event,
+.delete-event {
+  width: 30px; 
+  height: 30px;
+  font-size: 16px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-event:hover,
+.delete-event:hover {
+  background-color: #27e879; 
+}
+
+.address-box {
+  border: 1px solid #ccc; /* Borda da caixa */
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 20px; /* Espaçamento interno */
+  background-color: #f9f9f9; /* Cor de fundo da caixa */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+  margin-bottom: 20px; /* Espaçamento abaixo da caixa */
+}
+
+.address-box h2 {
+  font-size: 1.5em; /* Tamanho do título */
+  color: #333; /* Cor do título */
+  margin-bottom: 15px; /* Espaçamento abaixo do título */
+}
+
+/* Efeito de hover para todos os botões */
+.map-button:hover,
+.waze-button:hover,
+.search-button:hover,
+.save-button:hover,
+.close-button:hover,
+.edit-event-button:hover,
+.delete-event-button:hover {
+  background-color: #27e879; /* Cor de fundo ao passar o mouse */
+  transform: translateY(-2px); /* Leve elevação ao passar o mouse */
+}
+
+/* Efeito de clique para todos os botões */
+.map-button:active,
+.waze-button:active,
+.search-button:active,
+.save-button:active,
+.close-button:active,
+.edit-event-button:active,
+.delete-event-button:active {
+  transform: translateY(1px); /* Abaixar levemente quando clicado */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra reduzida ao clicar */
+}
+
+/* Tamanho da imagem para todos os botões */
+.map-button img,
+.waze-button img,
+.search-button img,
+.save-button img,
+.close-button img,
+.edit-event-button img,
+.delete-event-button img {
+  width: 24px; /* Tamanho da imagem */
+  height: 24px; /* Tamanho da imagem */
+}
+
+
+/* Sub menu */
+.submenu {
+  display: none; /* Oculto por padrão */
+  position: absolute;
+  top: 40px; /* Abaixo do menu-toggle */
+  left: 70%; /* Posiciona o submenu à direita do menu-toggle */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  z-index: 10;
+
+  /* Tamanho ajustável */
+  width: auto; /* Define uma largura ajustável ao conteúdo */
+  min-width: 150px; /* Largura mínima */
+  max-width: 250px; /* Largura máxima */
+}
+
+.submenu-item {
+  padding: 8px 12px;
+  font-size: 0.9em;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submenu-item:hover {
+  background-color: #f0f0f0;
+  color: #27e879; 
+}
+
+/* Alert */
+
+ /* Estilos básicos para o alerta */
+.custom-alert {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9;
+  border: 2px solid #4CAF50;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+.custom-alert h2 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.custom-alert p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.custom-alert button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-alert button:hover {
+  background-color: #45a049;
+}
+
+/* Background overlay */
+.alert-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Estilo tracejado para eventos passados */
+.past-event {
+  text-decoration: line-through;
+  color: gray;
+  opacity: 0.7;
+}
+
+
+/* Estilo para a seção de informações do calendário */
+.calendar-info .colspan2 {
+  grid-column: span 2; /* Elemento ocupa 2 colunas */
+}
+
+/* Estilos para a barra de pesquisa */
+#search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+
+#search input {
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  width: 100%;
+}
+
+#search input:focus-visible {
+  outline: none;
+}
+
+#search button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Exibição de dados meteorológicos */
+#weather {
+  display: none; /* Altere para block se quiser visível por padrão */
+  width: 100%;
+  text-align: center;
+}
+
+#weather.show {
+  display: block;
+}
+
+/* Título da seção de clima */
+#weather #title {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #372f3f;
+}
+
+/* Imagem de temperatura */
+#temp_img {
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+/* Organização dos textos de temperatura */
+.temp-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+}
+
+#temp_value {
+  font-weight: bold;
+  margin: 0;
+  font-size: 1em;
+}
+
+#temp_description {
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 0;
+  text-align: center;
+}
+
+/* Grid para outras informações de clima */
+#other_infos {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Estilos para cada informação adicional (temperatura, umidade, etc.) */
+.info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.info i {
+  font-size: 1em;
+}
+
+.info p {
+  margin: 0;
+  font-size: 1em;
+}
+
+#infos {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente os itens */
+}
+
+/* Cores dos ícones */
+#temp_max_icon {
+  color: #7f1d1d;
+}
+
+#temp_min_icon {
+  color: #0284c7;
+}
+
+#humidity_icon {
+  color: #0ea5e9;
+}
+
+#wind_icon {
+  color: #7c3aed;
+}
+
+/* Alerta de clima */
+#alert {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#alert img {
+  width: 200px;
+  margin-top: 20px;
+}
+
+#location-icon,
+#search-icon {
+  color: #2ECC71; /* Muda a cor dos ícones para verde */
+  cursor: pointer; /* Muda o cursor para pointer ao passar o mouse */
+}
+
+#location-icon:hover,
+#search-icon:hover {
+  color: #27AE60; /* Cor mais escura quando o mouse passa sobre o ícone */
+}
+
+#loading {
+  color: #2ECC71; /* Cor verde */
+  font-size: 14px;
+  margin-top: 10px; /* Espaço entre o formulário e a mensagem */
+}
