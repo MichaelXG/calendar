@@ -2,6 +2,8 @@
 
 const today = new Date();
 var monthSelected = today.getMonth(); // Mês corrente
+const UrlApiHoliday = `https://date.nager.at/Api/v3/PublicHolidays/`; 
+
 
 let schedules = {}; // Armazena os eventos
 
@@ -196,7 +198,7 @@ async function getHolidays(locale = "pt-BR", month, year) {
 }
 
 async function fetchHolidays(year, countryCode) {
-  const url = `https://date.nager.at/Api/v2/PublicHolidays/${year}/${countryCode}`;
+  const url = `${UrlApiHoliday}${year}/${countryCode}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -1490,8 +1492,6 @@ function initAudio() {
 
 // Chame initAudio quando a página carregar ou quando o usuário interagir pela primeira vez
 window.addEventListener("load", initAudio);
-
-
 
 // Alert --------------------
 
